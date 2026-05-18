@@ -20,7 +20,7 @@
   .header-text { flex: 1; }
   .header-title { font-family: 'DM Serif Display', serif; color: white; font-size: 15px; font-weight: 400; line-height: 1; }
   .header-sub { color: rgba(255,255,255,0.75); font-size: 11px; margin-top: 2px; }
-  .progress-wrap { background: var(--white); padding: 12px 20px 0; border-bottom: 1px solid var(--border); }
+  .progress-wrap { background: var(--white); padding: 8px 16px 0; border-bottom: 1px solid var(--border); }
   .progress-steps { display: flex; gap: 0; margin-bottom: 10px; }
   .step-pill { flex: 1; text-align: center; font-size: 10px; font-weight: 500; color: var(--mid); padding-bottom: 8px; border-bottom: 3px solid var(--border); cursor: pointer; transition: all 0.2s; line-height: 1.2; }
   .step-pill.active { color: var(--teal); border-bottom-color: var(--teal); }
@@ -28,30 +28,35 @@
   .step-num { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 50%; background: var(--border); color: var(--mid); font-size: 9px; font-weight: 600; margin-bottom: 3px; }
   .step-pill.active .step-num { background: var(--teal); color: white; }
   .step-pill.complete .step-num { background: var(--success); color: white; }
-  .content { padding: 16px 20px 100px; }
+  .content { padding: 10px 16px 90px; }
   .section { display: none; animation: fadeIn 0.25s ease; }
   .section.active { display: block; }
-  @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
-  .section-title { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--teal); margin-bottom: 4px; }
-  .section-divider { height: 2px; background: linear-gradient(90deg, var(--teal-mid), transparent); margin-bottom: 14px; }
-  .script-box { background: var(--script-bg); border: 1px solid var(--script-border); border-left: 4px solid var(--accent); border-radius: var(--radius); padding: 12px 14px; margin-bottom: 16px; }
-  .script-label { font-size: 10px; font-weight: 600; letter-spacing: 0.06em; color: #b36a00; text-transform: uppercase; margin-bottom: 5px; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:translateY(0); } }
+  .section-title { font-family: 'DM Serif Display', serif; font-size: 16px; color: var(--teal); margin-bottom: 2px; }
+  .section-divider { height: 2px; background: linear-gradient(90deg, var(--teal-mid), transparent); margin-bottom: 10px; }
+  .script-box { background: var(--script-bg); border: 1px solid var(--script-border); border-left: 4px solid var(--accent); border-radius: var(--radius); margin-bottom: 12px; overflow: hidden; cursor: pointer; }
+  .script-toggle { display: flex; align-items: center; justify-content: space-between; padding: 7px 12px; }
+  .script-label { font-size: 10px; font-weight: 600; letter-spacing: 0.06em; color: #b36a00; text-transform: uppercase; }
+  .script-arrow { font-size: 10px; color: #b36a00; transition: transform 0.2s; }
+  .script-box.open .script-arrow { transform: rotate(180deg); }
+  .script-body { padding: 0 12px 10px; display: none; }
+  .script-box.open .script-body { display: block; }
   .script-text { color: #5a3a1a; font-size: 13px; line-height: 1.6; font-style: italic; }
-  .note-box { background: var(--note-bg); border: 1px solid var(--note-border); border-left: 4px solid #f9a825; border-radius: var(--radius); padding: 10px 14px; margin-bottom: 16px; }
-  .note-label { font-size: 10px; font-weight: 600; color: #e65100; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
-  .note-text { color: #5a3a00; font-size: 12.5px; line-height: 1.5; }
-  .wrapup-box { background: var(--teal-light); border: 1px solid var(--teal-mid); border-left: 4px solid var(--teal); border-radius: var(--radius); padding: 12px 14px; margin-top: 16px; }
+  .note-box { background: var(--note-bg); border: 1px solid var(--note-border); border-left: 4px solid #f9a825; border-radius: var(--radius); padding: 8px 12px; margin-bottom: 12px; }
+  .note-label { font-size: 10px; font-weight: 600; color: #e65100; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 3px; }
+  .note-text { color: #5a3a00; font-size: 12px; line-height: 1.4; }
+  .wrapup-box { background: var(--teal-light); border: 1px solid var(--teal-mid); border-left: 4px solid var(--teal); border-radius: var(--radius); padding: 8px 12px; margin-top: 10px; }
   .wrapup-label { font-size: 10px; font-weight: 600; color: var(--teal); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 5px; }
-  .wrapup-text { color: var(--dark); font-size: 13px; line-height: 1.6; font-style: italic; }
-  .field-group { margin-bottom: 13px; }
-  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .wrapup-text { color: var(--dark); font-size: 12px; line-height: 1.5; font-style: italic; }
+  .field-group { margin-bottom: 9px; }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   .field-row.three { grid-template-columns: 1fr 1fr 1fr; }
   label { display: block; font-size: 11px; font-weight: 600; color: var(--mid); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px; }
   label .req { color: #c0392b; margin-left: 2px; }
-  input[type="text"], input[type="email"], input[type="tel"], input[type="date"], input[type="number"], textarea, select { width: 100%; padding: 8px 11px; border: 1.5px solid var(--border); border-radius: 7px; background: var(--white); font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--dark); transition: border-color 0.18s, box-shadow 0.18s; outline: none; }
+  input[type="text"], input[type="email"], input[type="tel"], input[type="date"], input[type="number"], textarea, select { width: 100%; padding: 6px 10px; border: 1.5px solid var(--border); border-radius: 7px; background: var(--white); font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--dark); transition: border-color 0.18s, box-shadow 0.18s; outline: none; }
   input:focus, textarea:focus, select:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(0,132,126,0.12); }
   input[readonly] { background: var(--teal-light); color: var(--teal); font-weight: 500; cursor: default; }
-  textarea { resize: vertical; min-height: 72px; }
+  textarea { resize: vertical; min-height: 58px; }
   select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23007874' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; padding-right: 28px; }
   .radio-group, .check-group { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
   .radio-group label, .check-group label { display: flex; align-items: center; gap: 5px; background: var(--white); border: 1.5px solid var(--border); border-radius: 6px; padding: 5px 10px; cursor: pointer; font-size: 12px; font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--dark); transition: all 0.15s; }
@@ -59,7 +64,7 @@
   .radio-group input, .check-group input { accent-color: var(--teal); width: 13px; height: 13px; }
   .radio-group input:checked + span, .check-group input:checked + span { color: var(--teal); font-weight: 600; }
   .radio-group label:has(input:checked), .check-group label:has(input:checked) { border-color: var(--teal); background: var(--teal-light); }
-  .footer { position: fixed; bottom: 0; left: 0; right: 0; background: var(--white); border-top: 1px solid var(--border); padding: 10px 20px; display: flex; gap: 8px; align-items: center; justify-content: flex-end; box-shadow: 0 -2px 12px rgba(0,132,126,0.08); }
+  .footer { position: fixed; bottom: 0; left: 0; right: 0; background: var(--white); border-top: 1px solid var(--border); padding: 8px 16px; display: flex; gap: 8px; align-items: center; justify-content: flex-end; box-shadow: 0 -2px 12px rgba(0,132,126,0.08); }
   .btn { padding: 9px 18px; border-radius: 7px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; border: none; cursor: pointer; transition: all 0.18s; }
   .btn-back { background: var(--white); border: 1.5px solid var(--border); color: var(--mid); }
   .btn-back:hover { border-color: var(--teal); color: var(--teal); }
@@ -116,7 +121,7 @@
     <div class="step-pill active" onclick="goToStep(1)"><div class="step-num">1</div><br>Contact</div>
     <div class="step-pill" onclick="goToStep(2)"><div class="step-num">2</div><br>Patient</div>
     <div class="step-pill" onclick="goToStep(3)"><div class="step-num">3</div><br>Clinical</div>
-    <div class="step-pill" onclick="goToStep(4)"><div class="step-num">4</div><br>ED Screen</div>
+    <div class="step-pill" id="step-pill-4" onclick="goToStep(4)" style="display:none"><div class="step-num">4</div><br>ED Screen</div>
     <div class="step-pill" onclick="goToStep(5)"><div class="step-num">5</div><br>Insurance</div>
     <div class="step-pill" onclick="goToStep(6)"><div class="step-num">6</div><br>Referral</div>
     <div class="step-pill" id="step-pill-7" onclick="goToStep(7)"><div class="step-num">7</div><br>Guardian</div>
@@ -130,9 +135,9 @@
   <div class="section active" id="section-1">
     <div class="section-title">Contact Information</div>
     <div class="section-divider"></div>
-    <div class="script-box">
-      <div class="script-label">&#128222; Read to Patient</div>
-      <div class="script-text">"Hi [name], I'm so happy you reached out to us. My name is [name] and I'm the Intake Coordinator at Be Well Kentucky. My job is to answer your questions, get some general background information, and help you get set up with the support you need. Just in case we get disconnected, what's the best phone number for you?"</div>
+    <div class="script-box" onclick="this.classList.toggle('open')">
+      <div class="script-toggle"><span class="script-label">&#128222; Read to Patient</span><span class="script-arrow">&#9660;</span></div>
+      <div class="script-body"><div class="script-text">"Hi [name], I'm so happy you reached out to us. My name is [name] and I'm the Intake Coordinator at Be Well Kentucky. My job is to answer your questions, get some general background information, and help you get set up with the support you need. Just in case we get disconnected, what's the best phone number for you?"</div></div>
     </div>
     <div class="field-row">
       <div class="field-group"><label>First Name <span class="req">*</span></label><input type="text" id="first_name" placeholder="First name"></div>
@@ -167,16 +172,16 @@
     <div class="field-group">
       <label>Program Interest(s)</label>
       <div class="check-group">
-        <label><input type="checkbox" name="program" value="Anxiety"> <span>Anxiety</span></label>
-        <label><input type="checkbox" name="program" value="Assessments"> <span>Assessments</span></label>
-        <label><input type="checkbox" name="program" value="Couples Therapy"> <span>Couples Therapy</span></label>
-        <label><input type="checkbox" name="program" value="Depression"> <span>Depression</span></label>
-        <label><input type="checkbox" name="program" value="Dietetics"> <span>Dietetics</span></label>
-        <label><input type="checkbox" name="program" value="Eating Disorder HLOC"> <span>Eating Disorder HLOC</span></label>
-        <label><input type="checkbox" name="program" value="Eating Disorder OP"> <span>Eating Disorder OP</span></label>
-        <label><input type="checkbox" name="program" value="Gender Affirming Care"> <span>Gender Affirming Care</span></label>
-        <label><input type="checkbox" name="program" value="Group Therapy"> <span>Group Therapy</span></label>
-        <label><input type="checkbox" name="program" value="Lexington School"> <span>Lexington School</span></label>
+        <label><input type="checkbox" name="program" value="Anxiety" onchange="updateEDTab()"> <span>Anxiety</span></label>
+        <label><input type="checkbox" name="program" value="Assessments" onchange="updateEDTab()"> <span>Assessments</span></label>
+        <label><input type="checkbox" name="program" value="Couples Therapy" onchange="updateEDTab()"> <span>Couples Therapy</span></label>
+        <label><input type="checkbox" name="program" value="Depression" onchange="updateEDTab()"> <span>Depression</span></label>
+        <label><input type="checkbox" name="program" value="Dietetics" onchange="updateEDTab()"> <span>Dietetics</span></label>
+        <label><input type="checkbox" name="program" value="Eating Disorder HLOC" onchange="updateEDTab()"> <span>Eating Disorder HLOC</span></label>
+        <label><input type="checkbox" name="program" value="Eating Disorder OP" onchange="updateEDTab()"> <span>Eating Disorder OP</span></label>
+        <label><input type="checkbox" name="program" value="Gender Affirming Care" onchange="updateEDTab()"> <span>Gender Affirming Care</span></label>
+        <label><input type="checkbox" name="program" value="Group Therapy" onchange="updateEDTab()"> <span>Group Therapy</span></label>
+        <label><input type="checkbox" name="program" value="Lexington School" onchange="updateEDTab()"> <span>Lexington School</span></label>
       </div>
     </div>
     <div class="field-group">
@@ -194,9 +199,9 @@
   <div class="section" id="section-3">
     <div class="section-title">Clinical History</div>
     <div class="section-divider"></div>
-    <div class="script-box">
-      <div class="script-label">&#128222; Read to Patient</div>
-      <div class="script-text">"Tell me a little bit about what's bringing you to Be Well Kentucky, so I can help you find the best support. And feel free to share any goals you have — when things are going well, what differences would you like to see in your life?"</div>
+    <div class="script-box" onclick="this.classList.toggle('open')">
+      <div class="script-toggle"><span class="script-label">&#128222; Read to Patient</span><span class="script-arrow">&#9660;</span></div>
+      <div class="script-body"><div class="script-text">"Tell me a little bit about what's bringing you to Be Well Kentucky, so I can help you find the best support. And feel free to share any goals you have — when things are going well, what differences would you like to see in your life?"</div></div>
     </div>
     <div class="field-group"><label>Mental Health Diagnosis?</label><input type="text" id="mh_diagnosis" placeholder="e.g. Anxiety, MDD, PTSD..."></div>
     <div class="field-group">
@@ -237,9 +242,9 @@
   <div class="section" id="section-4">
     <div class="section-title">ED Questionnaire</div>
     <div class="section-divider"></div>
-    <div class="script-box">
-      <div class="script-label">&#128222; Read to Patient</div>
-      <div class="script-text">"Before we talk about next steps, I need to gather a little clinical information to make sure we get you the right level of care. Is it okay if I ask a few quick questions?"</div>
+    <div class="script-box" onclick="this.classList.toggle('open')">
+      <div class="script-toggle"><span class="script-label">&#128222; Read to Patient</span><span class="script-arrow">&#9660;</span></div>
+      <div class="script-body"><div class="script-text">"Before we talk about next steps, I need to gather a little clinical information to make sure we get you the right level of care. Is it okay if I ask a few quick questions?"</div></div>
     </div>
     <div class="field-group"><label>Brief Summary of Symptoms &amp; Frequency</label><textarea id="symptom_summary" placeholder="Describe symptoms and how often they occur..."></textarea></div>
     <div class="field-group">
@@ -450,6 +455,14 @@
   const totalSteps = 8;
   let currentRecordId = null;
 
+  function updateEDTab() {
+    const edVals = ['Eating Disorder HLOC', 'Eating Disorder OP'];
+    const checked = Array.from(document.querySelectorAll('input[name="program"]:checked')).map(e => e.value);
+    const show = checked.some(v => edVals.includes(v));
+    const pill = document.getElementById('step-pill-4');
+    if (pill) { pill.style.display = show ? '' : 'none'; pill.dataset.skip = show ? 'false' : 'true'; }
+  }
+
   function fmtPhone(raw) {
     if (!raw) return null;
     const d = raw.replace(/\D/g, '');
@@ -512,14 +525,18 @@
   function nextStep() {
     if (!validateStep()) return;
     autoSave();
+    const edPill = document.getElementById('step-pill-4');
     const guardianPill = document.getElementById('step-pill-7');
-    if (currentStep === 6 && guardianPill.dataset.skip === 'true') goToStep(8);
+    if (currentStep === 3 && edPill && edPill.dataset.skip === 'true') goToStep(5);
+    else if (currentStep === 6 && guardianPill.dataset.skip === 'true') goToStep(8);
     else goToStep(currentStep + 1);
   }
 
   function prevStep() {
+    const edPill = document.getElementById('step-pill-4');
     const guardianPill = document.getElementById('step-pill-7');
-    if (currentStep === 8 && guardianPill.dataset.skip === 'true') goToStep(6);
+    if (currentStep === 5 && edPill && edPill.dataset.skip === 'true') goToStep(3);
+    else if (currentStep === 8 && guardianPill.dataset.skip === 'true') goToStep(6);
     else goToStep(currentStep - 1);
   }
 
@@ -685,7 +702,7 @@
       if (r.Date_of_Birth) { document.getElementById('dob').value = r.Date_of_Birth; calcAge(); }
       if (r.Program_Interest_s) {
         const vals = Array.isArray(r.Program_Interest_s) ? r.Program_Interest_s : r.Program_Interest_s.split(';').map(v => v.trim());
-        document.querySelectorAll('input[name="program"]').forEach(cb => { if (vals.includes(cb.value)) cb.checked = true; });
+        document.querySelectorAll('input[name="program"]').forEach(cb => { if (vals.includes(cb.value)) cb.checked = true; }); updateEDTab();
       }
       if (r.Evaluate_for_ED_HLOC !== undefined && r.Evaluate_for_ED_HLOC !== null)
         setRadio('eval_ed_hloc', r.Evaluate_for_ED_HLOC ? 'true' : 'false');
