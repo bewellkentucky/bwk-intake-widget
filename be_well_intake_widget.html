@@ -38,9 +38,9 @@
   .script-toggle { display: flex; align-items: center; justify-content: space-between; padding: 7px 12px; }
   .script-label { font-size: 10px; font-weight: 600; letter-spacing: 0.06em; color: #b36a00; text-transform: uppercase; }
   .script-arrow { font-size: 10px; color: #b36a00; transition: transform 0.2s; }
-  .script-box.open .script-arrow { transform: rotate(180deg); }
-  .script-body { padding: 0 12px 10px; display: none; }
-  .script-box.open .script-body { display: block; }
+  .script-box.closed .script-arrow { transform: rotate(180deg); }
+  .script-body { padding: 0 12px 10px; display: block; }
+  .script-box.closed .script-body { display: none; }
   .script-text { color: #5a3a1a; font-size: 13px; line-height: 1.6; font-style: italic; }
   .note-box { background: var(--note-bg); border: 1px solid var(--note-border); border-left: 4px solid #f9a825; border-radius: var(--radius); padding: 10px 14px; margin-bottom: 16px; }
   .note-label { font-size: 10px; font-weight: 600; color: #e65100; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
@@ -135,7 +135,7 @@
   <div class="section active" id="section-1">
     <div class="section-title">Contact Information</div>
     <div class="section-divider"></div>
-    <div class="script-box" onclick="this.classList.toggle('open')">
+    <div class="script-box" onclick="this.classList.toggle('closed')">
       <div class="script-toggle"><span class="script-label">&#128222; Read to Patient</span><span class="script-arrow">&#9660;</span></div>
       <div class="script-body"><div class="script-text">"Hi [name], I'm so happy you reached out to us. My name is [name] and I'm the Intake Coordinator at Be Well Kentucky. My job is to answer your questions, get some general background information, and help you get set up with the support you need. Just in case we get disconnected, what's the best phone number for you?"</div></div>
     </div>
@@ -199,7 +199,7 @@
   <div class="section" id="section-3">
     <div class="section-title">Clinical History</div>
     <div class="section-divider"></div>
-    <div class="script-box" onclick="this.classList.toggle('open')">
+    <div class="script-box" onclick="this.classList.toggle('closed')">
       <div class="script-toggle"><span class="script-label">&#128222; Read to Patient</span><span class="script-arrow">&#9660;</span></div>
       <div class="script-body"><div class="script-text">"Tell me a little bit about what's bringing you to Be Well Kentucky, so I can help you find the best support. And feel free to share any goals you have — when things are going well, what differences would you like to see in your life?"</div></div>
     </div>
@@ -242,7 +242,7 @@
   <div class="section" id="section-4">
     <div class="section-title">ED Questionnaire</div>
     <div class="section-divider"></div>
-    <div class="script-box" onclick="this.classList.toggle('open')">
+    <div class="script-box" onclick="this.classList.toggle('closed')">
       <div class="script-toggle"><span class="script-label">&#128222; Read to Patient</span><span class="script-arrow">&#9660;</span></div>
       <div class="script-body"><div class="script-text">"Before we talk about next steps, I need to gather a little clinical information to make sure we get you the right level of care. Is it okay if I ask a few quick questions?"</div></div>
     </div>
