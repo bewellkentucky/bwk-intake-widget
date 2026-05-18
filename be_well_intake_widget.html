@@ -104,6 +104,52 @@
     .summary-key { width: 40%; font-size: 10px; }
     .summary-val { font-size: 11px; }
   }
+
+  /* ── Payment Options Modal ── */
+  .modal-overlay {
+    display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(15,30,51,0.55); z-index: 500; align-items: center; justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal-box {
+    background: white; border-radius: 12px; max-width: 520px; width: 90%;
+    max-height: 80vh; overflow-y: auto;
+    box-shadow: 0 8px 40px rgba(27,54,93,0.25);
+    animation: modalIn 0.2s ease;
+  }
+  @keyframes modalIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+  .modal-header {
+    background: linear-gradient(135deg, #122440 0%, #1b365d 100%);
+    padding: 14px 18px; border-radius: 12px 12px 0 0;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .modal-header-title { color: white; font-family: 'DM Serif Display', serif; font-size: 16px; }
+  .modal-close {
+    color: rgba(255,255,255,0.8); font-size: 20px; cursor: pointer; line-height: 1;
+    background: none; border: none; font-family: sans-serif;
+  }
+  .modal-close:hover { color: white; }
+  .modal-body { padding: 18px; }
+  .payment-option {
+    border: 1.5px solid var(--border); border-radius: 8px;
+    margin-bottom: 12px; overflow: hidden;
+  }
+  .payment-option-header {
+    background: var(--teal-light); padding: 10px 14px;
+    display: flex; align-items: center; justify-content: space-between;
+    cursor: pointer;
+  }
+  .payment-option-title { font-weight: 600; font-size: 13px; color: var(--teal); }
+  .payment-option-rate { font-size: 12px; color: var(--mid); font-weight: 500; }
+  .payment-option-body { padding: 10px 14px; font-size: 12.5px; color: var(--dark); line-height: 1.6; display: none; }
+  .payment-option.open .payment-option-body { display: block; }
+  .payment-option-arrow { font-size: 10px; color: var(--mid); transition: transform 0.2s; }
+  .payment-option.open .payment-option-arrow { transform: rotate(180deg); }
+  .modal-trigger {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: var(--teal); font-size: 12px; font-weight: 600;
+    cursor: pointer; margin-top: 10px; text-decoration: underline;
+  }
 </style>
 </head>
 <body>
@@ -122,10 +168,11 @@
     <div class="step-pill" onclick="goToStep(2)"><div class="step-num">2</div><br>Patient</div>
     <div class="step-pill" onclick="goToStep(3)"><div class="step-num">3</div><br>Clinical</div>
     <div class="step-pill" id="step-pill-4" onclick="goToStep(4)" style="display:none"><div class="step-num">4</div><br>ED Screen</div>
-    <div class="step-pill" onclick="goToStep(5)"><div class="step-num">5</div><br>Insurance</div>
+    <div class="step-pill" onclick="goToStep(5)"><div class="step-num">5</div><br>Payment</div>
     <div class="step-pill" onclick="goToStep(6)"><div class="step-num">6</div><br>Referral</div>
-    <div class="step-pill" id="step-pill-7" onclick="goToStep(7)"><div class="step-num">7</div><br>Guardian</div>
-    <div class="step-pill" id="step-pill-8" onclick="autoSave(); goToStep(8)"><div class="step-num">&#10003;</div><br>Review</div>
+    <div class="step-pill" onclick="goToStep(7)"><div class="step-num">7</div><br>Status</div>
+    <div class="step-pill" id="step-pill-8" onclick="goToStep(8)"><div class="step-num">8</div><br>Guardian</div>
+    <div class="step-pill" id="step-pill-9" onclick="autoSave(); goToStep(9)"><div class="step-num">&#10003;</div><br>Review</div>
   </div>
 </div>
 
@@ -147,10 +194,7 @@
       <div class="field-group"><label>Phone <span class="req">*</span></label><input type="tel" id="phone" placeholder="(502) 000-0000"></div>
       <div class="field-group"><label>Secondary Phone</label><input type="tel" id="secondary_phone" placeholder="(502) 000-0000"></div>
     </div>
-    <div class="field-row">
-      <div class="field-group"><label>Email</label><input type="email" id="email" placeholder="patient@email.com"></div>
-      <div class="field-group"><label>Salutation</label><select id="salutation"><option value="">—</option><option>Mr.</option><option>Mrs.</option><option>Ms.</option><option>Dr.</option><option>Prof.</option></select></div>
-    </div>
+    <div class="field-group"><label>Email</label><input type="email" id="email" placeholder="patient@email.com"></div>
 
   </div>
 
@@ -177,7 +221,7 @@
         <label><input type="checkbox" name="program" value="Lexington School" onchange="updateEDTab()"> <span>Lexington School</span></label>
       </div>
     </div>
-    <div class="field-group">
+    <div class="field-group" id="eval_ed_hloc_wrap" style="display:none">
       <label>Evaluate for ED HLOC?</label>
       <div class="radio-group">
         <label><input type="radio" name="eval_ed_hloc" value="true"> <span>Yes</span></label>
@@ -304,15 +348,17 @@
 
   <!-- S5: Insurance -->
   <div class="section" id="section-5">
-    <div class="section-title">Insurance &amp; Status</div>
+    <div class="section-title">Payment Options</div>
     <div class="section-divider"></div>
-    <div class="script-box">
-      <div class="script-label">&#128222; Read to Patient</div>
-      <div class="script-text">"Now, are you hoping to use your insurance today? What type of insurance do you have? … Does the session fee fit into your budget?"</div>
+    <div class="script-box" onclick="this.classList.toggle('closed')">
+      <div class="script-toggle"><span class="script-label">&#128222; Read to Patient</span><span class="script-arrow">&#9660;</span></div>
+      <div class="script-body"><div class="script-text">"We have multiple options for payment. We are a private-pay clinic, but we help our patients submit claims to their insurance for potential reimbursement. We also offer practicum student rates, and if eligible, we have a sliding scale reduced fee process. Does our fee fit into your budget?"</div></div>
     </div>
+    <span class="modal-trigger" onclick="openPaymentModal()">&#9432; View all payment options</span>
+    <div style="margin-bottom:14px;"></div>
     <div class="field-row">
       <div class="field-group">
-        <label>Insurance Provider</label>
+        <label>Insurance Provider <span style="font-weight:400;text-transform:none;font-size:10px;color:var(--mid);">(if disclosed — for OON reimbursement reference)</span></label>
         <select id="insurance_provider">
           <option value="">— Select —</option>
           <option>Aetna</option><option>Anthem</option><option>Care Source</option>
@@ -329,27 +375,7 @@
         <label><input type="radio" name="medicaid" value="false"> <span>No</span></label>
       </div>
     </div>
-    <div class="field-row">
-      <div class="field-group">
-        <label>Intake Status <span class="req">*</span></label>
-        <select id="intake_status" onchange="toggleUnqualified()">
-          <option value="">— Select —</option>
-          <option>New</option><option>Contact Attempted</option><option>Working</option>
-          <option>Nurturing</option><option>Qualified</option>
-          <option>Accepted (Ready to Admin)</option><option>Admitted (Closed Won)</option>
-          <option>Closed (Unqualified)</option><option>Unqualified</option>
-        </select>
-      </div>
-      <div class="field-group" id="unqualified_wrap" style="display:none">
-        <label>Unqualified Reason</label>
-        <select id="unqualified_reason">
-          <option value="">— Select —</option>
-          <option>Financial Issue</option><option>Insurance issue</option><option>Declined Services</option>
-          <option>Sought treatment elsewhere</option><option>Does not meet clinic admission criteria</option>
-          <option>CPS Case</option><option>Open Lawsuit</option><option>Ghosted</option><option>Other</option>
-        </select>
-      </div>
-    </div>
+
   </div>
 
   <!-- S6: Referral -->
@@ -397,8 +423,33 @@
     </div>
   </div>
 
-  <!-- S7: Guardian -->
+  <!-- S7: Status -->
   <div class="section" id="section-7">
+    <div class="section-title">Intake Status</div>
+    <div class="section-divider"></div>
+    <div class="field-group">
+      <label>Intake Status <span class="req">*</span></label>
+      <select id="intake_status" onchange="toggleUnqualified()">
+        <option value="">— Select —</option>
+        <option>New</option><option>Contact Attempted</option><option>Working</option>
+        <option>Nurturing</option><option>Qualified</option>
+        <option>Accepted (Ready to Admin)</option><option>Admitted (Closed Won)</option>
+        <option>Closed (Unqualified)</option><option>Unqualified</option>
+      </select>
+    </div>
+    <div class="field-group" id="unqualified_wrap" style="display:none">
+      <label>Unqualified Reason</label>
+      <select id="unqualified_reason">
+        <option value="">— Select —</option>
+        <option>Financial Issue</option><option>Insurance issue</option><option>Declined Services</option>
+        <option>Sought treatment elsewhere</option><option>Does not meet clinic admission criteria</option>
+        <option>CPS Case</option><option>Open Lawsuit</option><option>Ghosted</option><option>Other</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- S8: Guardian -->
+  <div class="section" id="section-8">
     <div class="section-title">Guardian Information</div>
     <div class="section-divider"></div>
     <div class="note-box">
@@ -425,8 +476,8 @@
     </div>
   </div>
 
-  <!-- S8: Review -->
-  <div class="section" id="section-8">
+  <!-- S9: Review -->
+  <div class="section" id="section-9">
     <div class="section-title">Review &amp; Save</div>
     <div class="section-divider"></div>
     <div id="summary-content"></div>
@@ -446,7 +497,7 @@
 
 <script>
   let currentStep = 1;
-  const totalSteps = 8;
+  const totalSteps = 9;
   let currentRecordId = null;
 
   function updateEDTab() {
@@ -455,6 +506,8 @@
     const show = checked.some(v => edVals.includes(v));
     const pill = document.getElementById('step-pill-4');
     if (pill) { pill.style.display = show ? '' : 'none'; pill.dataset.skip = show ? 'false' : 'true'; }
+    const evalWrap = document.getElementById('eval_ed_hloc_wrap');
+    if (evalWrap) evalWrap.style.display = show ? 'block' : 'none';
   }
 
   function fmtPhone(raw) {
@@ -471,7 +524,7 @@
     const m = today.getMonth() - birth.getMonth();
     if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
     document.getElementById('age').value = age + ' years';
-    const guardianPill = document.getElementById('step-pill-7');
+    const guardianPill = document.getElementById('step-pill-8');
     if (age < 18) { guardianPill.style.display = ''; guardianPill.dataset.skip = 'false'; }
     else { guardianPill.style.display = 'none'; guardianPill.dataset.skip = 'true'; }
   }
@@ -520,17 +573,17 @@
     if (!validateStep()) return;
     autoSave();
     const edPill = document.getElementById('step-pill-4');
-    const guardianPill = document.getElementById('step-pill-7');
+    const guardianPill = document.getElementById('step-pill-8');
     if (currentStep === 3 && edPill && edPill.dataset.skip === 'true') goToStep(5);
-    else if (currentStep === 6 && guardianPill.dataset.skip === 'true') goToStep(8);
+    else if (currentStep === 7 && guardianPill.dataset.skip === 'true') goToStep(9);
     else goToStep(currentStep + 1);
   }
 
   function prevStep() {
     const edPill = document.getElementById('step-pill-4');
-    const guardianPill = document.getElementById('step-pill-7');
+    const guardianPill = document.getElementById('step-pill-8');
     if (currentStep === 5 && edPill && edPill.dataset.skip === 'true') goToStep(3);
-    else if (currentStep === 8 && guardianPill.dataset.skip === 'true') goToStep(6);
+    else if (currentStep === 9 && guardianPill.dataset.skip === 'true') goToStep(7);
     else goToStep(currentStep - 1);
   }
 
@@ -540,7 +593,7 @@
       if (!val('last_name'))  { showToast('Last name is required.', 'error'); return false; }
       if (!val('phone'))      { showToast('Phone is required.', 'error'); return false; }
     }
-    if (currentStep === 5) {
+    if (currentStep === 7) {
       if (!val('intake_status')) { showToast('Please set an Intake Status.', 'error'); return false; }
     }
     return true;
@@ -578,9 +631,11 @@
         ['Weight Lost Amount', val('weight_lost_amt')],
         ['Height (in)', val('height_in')], ['Weight (lbs)', val('weight_lbs')], ['BMI', val('bmi')]
       ]},
-      { group: 'Insurance & Status', fields: [
+      { group: 'Payment Options', fields: [
         ['Insurance Provider', val('insurance_provider')], ['Other Insurance', val('other_insurance')],
-        ['Medicaid?', getRadio('medicaid') === 'true' ? 'Yes' : getRadio('medicaid') === 'false' ? 'No' : ''],
+        ['Medicaid?', getRadio('medicaid') === 'true' ? 'Yes' : getRadio('medicaid') === 'false' ? 'No' : '']
+      ]},
+      { group: 'Intake Status', fields: [
         ['Intake Status', val('intake_status')], ['Unqualified Reason', val('unqualified_reason')]
       ]},
       { group: 'Referral & Source', fields: [
@@ -683,7 +738,6 @@
     ZOHO.CRM.API.getRecord({ Entity: "Contacts", RecordID: id }).then(function(result) {
       const r = result.data && result.data[0];
       if (!r) return;
-      if (r.Salutation) document.getElementById('salutation').value = r.Salutation;
       if (r.First_Name) document.getElementById('first_name').value = r.First_Name;
       if (r.Last_Name)  document.getElementById('last_name').value  = r.Last_Name;
       if (r.Phone)           document.getElementById('phone').value = r.Phone;
@@ -741,7 +795,55 @@
     });
   });
 
+
+  function openPaymentModal() {
+    document.getElementById('paymentModal').classList.add('open');
+  }
+  function closePaymentModal() {
+    document.getElementById('paymentModal').classList.remove('open');
+  }
   ZOHO.embeddedApp.init();
 </script>
+
+  <!-- Payment Options Modal -->
+  <div class="modal-overlay" id="paymentModal" onclick="if(event.target===this)closePaymentModal()">
+    <div class="modal-box">
+      <div class="modal-header">
+        <span class="modal-header-title">Be Well Kentucky — Payment Options</span>
+        <button class="modal-close" onclick="closePaymentModal()">&#10005;</button>
+      </div>
+      <div class="modal-body">
+        <div class="payment-option" onclick="this.classList.toggle('open')">
+          <div class="payment-option-header">
+            <span class="payment-option-title">&#128179; Standard Self-Pay Rate</span>
+            <span><span class="payment-option-rate">$[rate] / session</span> <span class="payment-option-arrow">&#9660;</span></span>
+          </div>
+          <div class="payment-option-body">Be Well Kentucky is a private-pay practice. Our standard session fee is <strong>$[rate]</strong> for a 50-minute individual session. Payment is due at time of service via credit card, HSA, or FSA.</div>
+        </div>
+        <div class="payment-option" onclick="this.classList.toggle('open')">
+          <div class="payment-option-header">
+            <span class="payment-option-title">&#127760; Out-of-Network Insurance Reimbursement</span>
+            <span><span class="payment-option-rate">Varies by plan</span> <span class="payment-option-arrow">&#9660;</span></span>
+          </div>
+          <div class="payment-option-body">While we do not bill insurance directly, many clients receive partial reimbursement through their out-of-network benefits. We provide a superbill you can submit to your insurance company. Ask your insurer: <em>"What are my out-of-network outpatient mental health benefits?"</em></div>
+        </div>
+        <div class="payment-option" onclick="this.classList.toggle('open')">
+          <div class="payment-option-header">
+            <span class="payment-option-title">&#127891; Practicum Student Rate</span>
+            <span><span class="payment-option-rate">$[rate] / session</span> <span class="payment-option-arrow">&#9660;</span></span>
+          </div>
+          <div class="payment-option-body">Clients who work with our supervised practicum students receive a reduced rate of <strong>$[rate]</strong> per session. Practicum students are graduate-level clinicians completing their training under direct supervision. Availability is limited.</div>
+        </div>
+        <div class="payment-option" onclick="this.classList.toggle('open')">
+          <div class="payment-option-header">
+            <span class="payment-option-title">&#128203; Reduced Fee Application</span>
+            <span><span class="payment-option-rate">Based on income</span> <span class="payment-option-arrow">&#9660;</span></span>
+          </div>
+          <div class="payment-option-body">Be Well Kentucky offers a limited number of reduced fee slots for clients who demonstrate financial need, determined on a sliding scale based on household income and family size. The client must complete our Reduced Fee Application. Slots are limited and not guaranteed.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
