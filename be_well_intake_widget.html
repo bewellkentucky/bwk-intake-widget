@@ -683,7 +683,7 @@
 
   ZOHO.embeddedApp.on("PageLoad", function(data) {
     console.log("PageLoad fired:", JSON.stringify(data));
-    ZOHO.CRM.UI.Resize({ height: "90vh", width: "85vw" });
+    setTimeout(function() { ZOHO.CRM.UI.Resize({ height: "90vh", width: "85vw" }); }, 500);
     const id = Array.isArray(data.EntityId) ? data.EntityId[0] : data.EntityId;
     if (!id) { console.log("No EntityId found"); ZOHO.embeddedApp.init(); return; }
     currentRecordId = id;
