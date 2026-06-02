@@ -808,7 +808,7 @@
     // Auto-stamp widget opened time
     ZOHO.CRM.API.updateRecord({
       Entity: "Contacts",
-      APIData: { id: id, Last_Intake_Widget_Opened: new Date().toISOString() },
+      APIData: { id: id, Last_Intake_Widget_Opened: (function(){ var d = new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")+"T"+String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0")+":"+String(d.getSeconds()).padStart(2,"0")+"+00:00"; })() },
       Trigger: []
     }).catch(function(e) { console.log("Stamp error:", e); });
 
