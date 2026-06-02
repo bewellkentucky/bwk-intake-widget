@@ -150,8 +150,6 @@
     color: var(--teal); font-size: 12px; font-weight: 600;
     cursor: pointer; margin-top: 10px; text-decoration: underline;
   }
-  .script-bullets { padding-left: 18px; margin: 0; }
-  .script-bullets li { color: #5a3a1a; font-size: 13px; line-height: 1.7; }
 </style>
 </head>
 <body>
@@ -401,11 +399,14 @@
     <div class="script-box" onclick="this.classList.toggle('closed')">
       <div class="script-toggle"><span class="script-label">&#128172; Conversation Guide</span><span class="script-arrow">&#9660;</span></div>
       <div class="script-body"><ul class="script-bullets">
-        <li>We are a private-pay clinic — we don't bill insurance directly</li>
-        <li>We help patients submit claims for out-of-network reimbursement</li>
-        <li>Practicum student rates are available at a reduced cost</li>
-        <li>Sliding scale / reduced fee application available if eligible</li>
-        <li>Ask: does the fee work within their budget?</li>
+        <li>We have several options for payment</li>
+        <li>Can usually find something that works for everyone</li>
+        <ul style="padding-left:40px;margin:2px 0 4px;list-style-type:circle;">
+          <li style="color:#2a4a6b;font-size:11.5px;line-height:1.6;margin-bottom:3px;">Out-of-network benefits — we provide a superbill</li>
+          <li style="color:#2a4a6b;font-size:11.5px;line-height:1.6;margin-bottom:3px;">Sliding scale / reduced fee (if they qualify)</li>
+          <li style="color:#2a4a6b;font-size:11.5px;line-height:1.6;margin-bottom:3px;">Practicum student rate (reduced cost)</li>
+        </ul>
+        <li>Ask: "Which option sounds like it might work best for you?"</li>
       </ul></div>
     </div>
     <span class="modal-trigger" onclick="openPaymentModal()">&#9432; View all payment options</span>
@@ -899,31 +900,31 @@
       <div class="modal-body">
         <div class="payment-option" onclick="this.classList.toggle('open')">
           <div class="payment-option-header">
-            <span class="payment-option-title">&#128179; Standard Self-Pay Rate</span>
-            <span><span class="payment-option-rate">$[rate] / session</span> <span class="payment-option-arrow">&#9660;</span></span>
-          </div>
-          <div class="payment-option-body">Be Well Kentucky is a private-pay practice. Our standard session fee is <strong>$[rate]</strong> for a 50-minute individual session. Payment is due at time of service via credit card, HSA, or FSA.</div>
-        </div>
-        <div class="payment-option" onclick="this.classList.toggle('open')">
-          <div class="payment-option-header">
-            <span class="payment-option-title">&#127760; Out-of-Network Insurance Reimbursement</span>
+            <span class="payment-option-title">&#127760; Use Your Insurance (Out-of-Network)</span>
             <span><span class="payment-option-rate">Varies by plan</span> <span class="payment-option-arrow">&#9660;</span></span>
           </div>
-          <div class="payment-option-body">While we do not bill insurance directly, many clients receive partial reimbursement through their out-of-network benefits. We provide a superbill you can submit to your insurance company. Ask your insurer: <em>"What are my out-of-network outpatient mental health benefits?"</em></div>
+          <div class="payment-option-body">Many clients use their out-of-network benefits. We provide a superbill to submit to your insurer. Ask them: <em>"What are my out-of-network mental health benefits?"</em> Reimbursement varies by plan.</div>
         </div>
         <div class="payment-option" onclick="this.classList.toggle('open')">
           <div class="payment-option-header">
             <span class="payment-option-title">&#127891; Practicum Student Rate</span>
             <span><span class="payment-option-rate">$[rate] / session</span> <span class="payment-option-arrow">&#9660;</span></span>
           </div>
-          <div class="payment-option-body">Clients who work with our supervised practicum students receive a reduced rate of <strong>$[rate]</strong> per session. Practicum students are graduate-level clinicians completing their training under direct supervision. Availability is limited.</div>
+          <div class="payment-option-body">Work with a supervised graduate-level clinician at a reduced rate. Same quality of care — just at a lower cost. Availability is limited.</div>
         </div>
         <div class="payment-option" onclick="this.classList.toggle('open')">
           <div class="payment-option-header">
             <span class="payment-option-title">&#128203; Reduced Fee Application</span>
             <span><span class="payment-option-rate">Based on income</span> <span class="payment-option-arrow">&#9660;</span></span>
           </div>
-          <div class="payment-option-body">Be Well Kentucky offers a limited number of reduced fee slots for clients who demonstrate financial need, determined on a sliding scale based on household income and family size. The client must complete our Reduced Fee Application. Slots are limited and not guaranteed.</div>
+          <div class="payment-option-body">A sliding scale option for clients who qualify based on household income. Requires completion of our Reduced Fee Application. Slots are limited.</div>
+        </div>
+        <div class="payment-option" onclick="this.classList.toggle('open')">
+          <div class="payment-option-header">
+            <span class="payment-option-title">&#128179; Standard Rate</span>
+            <span><span class="payment-option-rate">$[rate] / session</span> <span class="payment-option-arrow">&#9660;</span></span>
+          </div>
+          <div class="payment-option-body">Our standard fee is <strong>$[rate]</strong> per 50-minute session. Accepted via credit card, HSA, or FSA. Payment is due at time of service.</div>
         </div>
       </div>
     </div>
