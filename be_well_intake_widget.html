@@ -345,30 +345,9 @@
         <label><input type="radio" name="ed_undiagnosed" value="No"> <span>No</span></label>
       </div>
     </div>
-    <div class="field-group">
-      <label>Afraid of Becoming Fat?</label>
-      <div class="radio-group">
-        <label><input type="radio" name="afraid_fat" value="Yes"> <span>Yes</span></label>
-        <label><input type="radio" name="afraid_fat" value="No"> <span>No</span></label>
-        <label><input type="radio" name="afraid_fat" value="Declined to Answer"> <span>Declined to Answer</span></label>
-      </div>
-    </div>
-    <div class="field-group">
-      <label>At Lowest Weight, Feels Fat?</label>
-      <div class="radio-group">
-        <label><input type="radio" name="feels_fat" value="Yes"> <span>Yes</span></label>
-        <label><input type="radio" name="feels_fat" value="No"> <span>No</span></label>
-        <label><input type="radio" name="feels_fat" value="Declined to Answer"> <span>Declined to Answer</span></label>
-      </div>
-    </div>
-    <div class="field-group">
-      <label>Weighs Much Less Than Should?</label>
-      <div class="radio-group">
-        <label><input type="radio" name="underweight" value="Yes"> <span>Yes</span></label>
-        <label><input type="radio" name="underweight" value="No"> <span>No</span></label>
-        <label><input type="radio" name="underweight" value="Declined to Answer"> <span>Declined to Answer</span></label>
-      </div>
-    </div>
+
+
+
     <div class="field-group">
       <label>Lost Weight This Past Year?</label>
       <div class="radio-group">
@@ -750,9 +729,6 @@
       Brief_summary_of_your_symptoms_how_often: val('symptom_summary'),
       Previous_Diagnosis_of_ED: getRadio('prev_ed_dx'),
       Eating_Disorder_Undiagnosed: getRadio('ed_undiagnosed'),
-      Are_you_afraid_of_becoming_fat: getRadio('afraid_fat'),
-      At_your_lowest_weight_do_you_feel_fat: getRadio('feels_fat'),
-      Do_you_weigh_a_lot_less_than_you_should: getRadio('underweight'),
       Weight_lost_this_last_year: getRadio('weight_lost_yr'),
       How_often_do_you_restrict_food_intake: val('restrict_freq'),
       How_much_weight_did_you_lose: val('weight_lost_amt'),
@@ -850,9 +826,6 @@
       if (r.Brief_summary_of_your_symptoms_how_often) document.getElementById('symptom_summary').value = r.Brief_summary_of_your_symptoms_how_often;
       if (r.Previous_Diagnosis_of_ED)         setRadio('prev_ed_dx', r.Previous_Diagnosis_of_ED);
       if (r.Eating_Disorder_Undiagnosed)      setRadio('ed_undiagnosed', r.Eating_Disorder_Undiagnosed);
-      if (r.Are_you_afraid_of_becoming_fat)   setRadio('afraid_fat', r.Are_you_afraid_of_becoming_fat);
-      if (r.At_your_lowest_weight_do_you_feel_fat) setRadio('feels_fat', r.At_your_lowest_weight_do_you_feel_fat);
-      if (r.Do_you_weigh_a_lot_less_than_you_should) setRadio('underweight', r.Do_you_weigh_a_lot_less_than_you_should);
       if (r.Weight_lost_this_last_year)       setRadio('weight_lost_yr', r.Weight_lost_this_last_year);
       if (r.How_often_do_you_restrict_food_intake) document.getElementById('restrict_freq').value = r.How_often_do_you_restrict_food_intake;
       if (r.How_much_weight_did_you_lose)     document.getElementById('weight_lost_amt').value = r.How_much_weight_did_you_lose;
