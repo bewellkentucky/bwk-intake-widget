@@ -33,6 +33,21 @@
   .section.active { display: block; }
   @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
   .section-title { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--teal); margin-bottom: 4px; }
+  .script-na-toggle {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 14px; margin: 4px 0 12px 0;
+    border: 1.5px solid #d0d0d0; border-radius: 20px;
+    background: #fafafa; color: #666;
+    font-size: 12px; font-family: 'Inter', sans-serif;
+    cursor: pointer; transition: all 0.2s ease;
+    user-select: none;
+  }
+  .script-na-toggle:hover { background: #f0f0f0; border-color: #b0b0b0; }
+  .script-na-toggle.active {
+    background: #fff3cd; border-color: #f5c72f; color: #856404; font-weight: 600;
+  }
+  .script-na-toggle.active:hover { background: #ffe89c; }
+  .script-na-toggle .check-icon { font-size: 14px; }
   .section-divider { height: 2px; background: linear-gradient(90deg, var(--teal-mid), transparent); margin-bottom: 14px; }
   .script-box { background: #f0f6fb; border: 1px solid #c4d4e4; border-left: 4px solid #1b365d; border-radius: var(--radius); margin-bottom: 12px; overflow: hidden; cursor: pointer; }
   .script-toggle { display: flex; align-items: center; justify-content: space-between; padding: 7px 12px; }
@@ -241,6 +256,10 @@
     </div>
     <div class="field-group"><label>Patient Comments</label><textarea id="patient_comments" placeholder="Notes or comments shared by the patient..."></textarea></div>
     <div class="field-group"><label>Be Well Notes (Internal)</label><textarea id="be_well_notes" placeholder="Internal staff notes..."></textarea></div>
+    <div id="script_na_toggle" class="script-na-toggle" onclick="toggleScriptNA()" title="Flag this record if the widget is being used for notes only, not as a real intake script">
+      <span class="check-icon" id="script_na_icon">☐</span>
+      <span id="script_na_label">Intake Script Not Applicable</span>
+    </div>
   </div>
 
   <!-- S3: Clinical -->
@@ -643,6 +662,36 @@
   function getRadio(name) { const el = document.querySelector(`input[name="${name}"]:checked`); return el ? el.value : null; }
   function getChecked(name) { return Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(e => e.value); }
 
+  // Track Script Not Applicable state; writes to Zoho immediately on toggle
+  let scriptNAState = false;
+  function setScriptNAVisual(isActive) {
+    const el = document.getElementById('script_na_toggle');
+    const icon = document.getElementById('script_na_icon');
+    const label = document.getElementById('script_na_label');
+    if (!el) return;
+    if (isActive) {
+      el.classList.add('active');
+      icon.textContent = '☑';
+      label.textContent = 'Intake Script Not Applicable ✓';
+    } else {
+      el.classList.remove('active');
+      icon.textContent = '☐';
+      label.textContent = 'Intake Script Not Applicable';
+    }
+  }
+  function toggleScriptNA() {
+    scriptNAState = !scriptNAState;
+    setScriptNAVisual(scriptNAState);
+    // Persist immediately so the flag survives even if user closes without hitting Save
+    if (typeof currentRecordId !== 'undefined' && currentRecordId) {
+      ZOHO.CRM.API.updateRecord({
+        Entity: "Contacts",
+        APIData: { id: currentRecordId, Intake_Script_Not_Applicable: scriptNAState },
+        Trigger: []
+      }).catch(function(e) { console.log("Script NA toggle error:", e); });
+    }
+  }
+
   function buildSummary() {
     const rows = [
       { group: 'Contact Information', fields: [
@@ -716,6 +765,7 @@
       Street: val('street'), City: val('city'), State: val('state'), Zip_Code: val('zip_code'),
       Date_of_Birth: val('dob'),
       Minor: val('age') ? (parseInt(val('age')) < 18 ? true : false) : null,
+      Intake_Script_Not_Applicable: scriptNAState,
       Program_Interest_s: programs.length ? programs : null,
       Evaluate_for_ED_HLOC: evalRaw === 'true' ? true : evalRaw === 'false' ? false : null,
       Patient_Comments: val('patient_comments'), Be_Well_Notes: val('be_well_notes'),
@@ -810,6 +860,10 @@
       if (r.Program_Interest_s) {
         const vals = Array.isArray(r.Program_Interest_s) ? r.Program_Interest_s : r.Program_Interest_s.split(';').map(v => v.trim());
         document.querySelectorAll('input[name="program"]').forEach(cb => { if (vals.includes(cb.value)) cb.checked = true; }); updateEDTab();
+      }
+      if (r.Intake_Script_Not_Applicable === true) {
+        scriptNAState = true;
+        setScriptNAVisual(true);
       }
       if (r.Evaluate_for_ED_HLOC !== undefined && r.Evaluate_for_ED_HLOC !== null)
         setRadio('eval_ed_hloc', r.Evaluate_for_ED_HLOC ? 'true' : 'false');
